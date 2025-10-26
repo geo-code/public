@@ -28,6 +28,34 @@
             padding: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .controls.hidden {
+            transform: translateX(100%);
+        }
+
+        .menu-toggle {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #333;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-toggle:hover {
+            background: #f0f0f0;
         }
 
         .controls button {
@@ -78,13 +106,13 @@
         .word-card {
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 18px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: white;
-            height: 170px;
+            height: 140px;
             position: relative;
         }
 
@@ -128,12 +156,14 @@
             display: block;
         }
 
-        .print-mode .controls {
+        .print-mode .controls,
+        .print-mode .menu-toggle {
             display: none !important;
         }
 
         @media print {
-            .controls {
+            .controls,
+            .menu-toggle {
                 display: none !important;
             }
 
@@ -149,6 +179,9 @@
 </head>
 
 <body>
+    <div class="menu-toggle" onclick="toggleMenu()" id="menu-toggle">
+        ☰
+    </div>
     <div class="controls">
         <div class="page-nav">
             <button onclick="showPage(1)" class="page-btn active" id="page1-btn">1페이지</button>
@@ -842,6 +875,7 @@
         let showMeaning = false;
         let hideHiragana = true;
         let printMode = false;
+        let menuVisible = true;
 
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function () {
@@ -923,6 +957,20 @@
                 document.body.classList.remove('print-mode');
                 button.classList.remove('active');
                 button.textContent = '프린트 모드';
+            }
+        }
+
+        function toggleMenu() {
+            menuVisible = !menuVisible;
+            const controls = document.querySelector('.controls');
+            const toggleBtn = document.getElementById('menu-toggle');
+
+            if (menuVisible) {
+                controls.classList.remove('hidden');
+                toggleBtn.textContent = '☰';
+            } else {
+                controls.classList.add('hidden');
+                toggleBtn.textContent = '⚙';
             }
         }
     </script>
