@@ -18,101 +18,77 @@
             min-height: 100vh;
         }
 
-        .controls {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid #333;
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: transform 0.3s ease;
+        .top-controls {
+            text-align: center;
+            padding: 20px;
         }
 
-        .controls.hidden {
-            transform: translateX(100%);
-        }
-
-        .menu-toggle {
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.95);
-            border: 2px solid #333;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .top-controls button {
+            margin: 0 15px;
+            padding: 0;
+            border: none;
+            background: none;
             cursor: pointer;
-            z-index: 1001;
-            font-size: 20px;
+            font-size: 16px;
+            color: #666;
+            text-decoration: underline;
+        }
+
+        .top-controls button:hover {
+            color: #333;
+        }
+
+        .top-controls button.active {
+            color: #333;
             font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
         }
 
-        .menu-toggle:hover {
-            background: #f0f0f0;
+        .bottom-nav {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
         }
 
-        .controls button {
-            display: block;
-            width: 150px;
-            margin: 5px 0;
-            padding: 8px 12px;
-            border: 2px solid #333;
-            border-radius: 5px;
-            background: white;
+        .bottom-nav button {
+            margin: 0 5px;
+            padding: 8px 16px;
+            border: none;
+            background: none;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 16px;
+            color: #666;
+            text-decoration: underline;
+        }
+
+        .bottom-nav button:hover {
+            color: #333;
+        }
+
+        .bottom-nav button.active {
+            color: #333;
             font-weight: bold;
-        }
-
-        .controls button:hover {
-            background: #f0f0f0;
-        }
-
-        .controls button.active {
-            background: #333;
-            color: white;
-        }
-
-        .page-nav {
-            margin-bottom: 10px;
-        }
-
-        .page-nav button {
-            background: #e0e0e0;
-        }
-
-        .page-nav button.active {
-            background: #333;
-            color: white;
+            text-decoration: none;
         }
 
         .container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
-            margin-top: 20px;
+            margin: 20px auto;
             max-width: 210mm;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .word-card {
             border: 2px solid #333;
             border-radius: 8px;
-            padding: 12px;
+            padding: 6px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             background: white;
-            height: 140px;
+            height: 100px;
             position: relative;
         }
 
@@ -156,14 +132,14 @@
             display: block;
         }
 
-        .print-mode .controls,
-        .print-mode .menu-toggle {
+        .print-mode .top-controls,
+        .print-mode .bottom-nav {
             display: none !important;
         }
 
         @media print {
-            .controls,
-            .menu-toggle {
+            .top-controls,
+            .bottom-nav {
                 display: none !important;
             }
 
@@ -173,26 +149,19 @@
 
             .container {
                 margin-top: 0;
+                margin-bottom: 0;
             }
         }
     </style>
 </head>
 
 <body>
-    <div class="menu-toggle" onclick="toggleMenu()" id="menu-toggle">
-        ☰
+    <div class="top-controls">
+        <button onclick="toggleMeaning()" id="meaning-btn">한글뜻</button>
+        <button onclick="toggleHiragana()" id="hiragana-btn">히라가나</button>
+        <button onclick="togglePrintMode()" id="print-btn">프린트모드</button>
     </div>
-    <div class="controls">
-        <div class="page-nav">
-            <button onclick="showPage(1)" class="page-btn active" id="page1-btn">1페이지</button>
-            <button onclick="showPage(2)" class="page-btn" id="page2-btn">2페이지</button>
-            <button onclick="showPage(3)" class="page-btn" id="page3-btn">3페이지</button>
-            <button onclick="showPage(4)" class="page-btn" id="page4-btn">4페이지</button>
-        </div>
-        <button onclick="toggleMeaning()" id="meaning-btn">한글뜻 보기</button>
-        <button onclick="toggleHiragana()" id="hiragana-btn">히라가나 숨기기</button>
-        <button onclick="togglePrintMode()" id="print-btn">프린트 모드</button>
-    </div>
+
 
     <!-- 1페이지 -->
     <div class="page active" id="page1">
@@ -870,12 +839,18 @@
         </div>
     </div>
 
+    <div class="bottom-nav">
+        <button onclick="showPage(1)" class="page-btn active" id="page1-btn">1</button>
+        <button onclick="showPage(2)" class="page-btn" id="page2-btn">2</button>
+        <button onclick="showPage(3)" class="page-btn" id="page3-btn">3</button>
+        <button onclick="showPage(4)" class="page-btn" id="page4-btn">4</button>
+    </div>
+
     <script>
         let currentPage = 1;
         let showMeaning = false;
         let hideHiragana = true;
         let printMode = false;
-        let menuVisible = true;
 
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function () {
@@ -889,7 +864,7 @@
 
             // 히라가나 숨기기 초기화
             document.body.classList.add('hide-hiragana');
-            document.getElementById('hiragana-btn').textContent = '히라가나 보기';
+            document.getElementById('hiragana-btn').textContent = '히라가나';
         });
 
         function showPage(pageNum) {
@@ -922,11 +897,11 @@
             if (showMeaning) {
                 document.body.classList.add('show-meaning');
                 button.classList.add('active');
-                button.textContent = '한글뜻 숨기기';
+                button.textContent = '한글뜻';
             } else {
                 document.body.classList.remove('show-meaning');
                 button.classList.remove('active');
-                button.textContent = '한글뜻 보기';
+                button.textContent = '한글뜻';
             }
         }
 
@@ -937,11 +912,11 @@
             if (hideHiragana) {
                 document.body.classList.add('hide-hiragana');
                 button.classList.remove('active');
-                button.textContent = '히라가나 보기';
+                button.textContent = '히라가나';
             } else {
                 document.body.classList.remove('hide-hiragana');
                 button.classList.add('active');
-                button.textContent = '히라가나 숨기기';
+                button.textContent = '히라가나';
             }
         }
 
@@ -952,25 +927,11 @@
             if (printMode) {
                 document.body.classList.add('print-mode');
                 button.classList.add('active');
-                button.textContent = '편집 모드';
+                button.textContent = '프린트모드';
             } else {
                 document.body.classList.remove('print-mode');
                 button.classList.remove('active');
-                button.textContent = '프린트 모드';
-            }
-        }
-
-        function toggleMenu() {
-            menuVisible = !menuVisible;
-            const controls = document.querySelector('.controls');
-            const toggleBtn = document.getElementById('menu-toggle');
-
-            if (menuVisible) {
-                controls.classList.remove('hidden');
-                toggleBtn.textContent = '☰';
-            } else {
-                controls.classList.add('hidden');
-                toggleBtn.textContent = '⚙';
+                button.textContent = '프린트모드';
             }
         }
     </script>
